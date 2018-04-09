@@ -1,13 +1,14 @@
 # Caching & persist using Springboot, Spring Security, Ignite and Couchbase
 
 ##Step to start the application:
-Open terminal, run the following command to start the couchbase DB:
+
+1. Open terminal, run the following command to start the couchbase DB:
 
 
 
     > docker-compose up -d
 
-Run the following command to start 3 server nodes:
+2. Run the following command to start 3 server nodes:
 
 
     > mvn spring-boot:run -D server.port=8085 -Dspring.profiles.active="server"
@@ -15,7 +16,7 @@ Run the following command to start 3 server nodes:
     > mvn spring-boot:run -D server.port=8087 -Dspring.profiles.active="server"
  
 
-Run the following command to start client:
+3. Run the following command to start client:
 
 
     > mvn spring-boot:run -D server.port=8082 -Dspring.profiles.active="client"
