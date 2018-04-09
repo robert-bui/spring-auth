@@ -1,0 +1,17 @@
+version: '2'
+services:
+    couchbase:
+        image: couchbase/server
+        ports:
+            - "8091-8094:8091-8094"
+            - "11210:11210"
+
+
+ #   hazel:
+ #       image: hazelcast/hazelcast
+ #       ports:
+ #           - "5071:5071"
+ #       environment:
+ #         - JAVA_OPTS="-Xms512M -Xmx1024M"
+
+
