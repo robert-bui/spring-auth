@@ -1,5 +1,6 @@
 package com.gobear.security;
 
+import com.gobear.security.service.impl.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,9 +21,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private CustomAuthenProvider authenProvider;
+
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
+
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.authenticationProvider(authenProvider);
+//        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -32,20 +41,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/home", "/user/*", "/token/*", "/cache/*").permitAll()
                 .anyRequest().authenticated()
                 /*.and().httpBasic().authenticationEntryPoint(authenEntryEndpoint);*/
-                .and().formLogin().loginPage("/login").permitAll().and().logout().permitAll();
+                .and().formLogin().loginPage("/login").permitAll()
+                .and().formLogin().successHandler(loginSuccessHandler)
+                .and().logout().permitAll();
         http.addFilterAfter(new CustomFilter(), BasicAuthenticationFilter.class);
 
     }
 
-   /* @Bean
-    @Override
-    protected UserDetailsService userDetailsService() {
-        UserDetails userDetails = User.withDefaultPasswordEncoder()
-                .username("robert").password("robert")
-                .roles("USER").build();
-        return new InMemoryUserDetailsManager(userDetails);
-
-       *//*return userDetailsService;*//*
-    }*/
 
 }

@@ -13,6 +13,7 @@ import java.util.Collection;
 public class IgniteCacheServiceImpl implements IgniteCacheService {
 
 
+    /* Using Spring Cache Manager*/
     @Autowired
     @Qualifier("cacheManager")
     private SpringCacheManager cacheManager;
@@ -28,4 +29,23 @@ public class IgniteCacheServiceImpl implements IgniteCacheService {
         Cache.ValueWrapper valueWrapper = cache.get(key);
         return valueWrapper.get();
     }
+
+    /* Using Spring Data*/
+    /*@Autowired
+    private Ignite ignite;
+
+    @Override
+    public Collection<String> getAllCacheNames() {
+        return ignite.cacheNames();
+    }
+
+    @Override
+    public Object getCacheValue(String cacheName, String key) {
+        return ignite.getOrCreateCache(cacheName).get(key);
+    }
+
+    @Override
+    public Object getCacheValue(String cacheName) {
+        return ignite.getOrCreateCache(cacheName);
+    }*/
 }

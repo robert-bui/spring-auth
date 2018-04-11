@@ -7,4 +7,6 @@ public interface IgniteCacheService {
     Collection<String> getAllCacheNames();
 
     Object getCacheValue(String cacheName, String key);
+
+//    Object getCacheValue(String cacheName);
 }

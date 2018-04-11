@@ -10,6 +10,6 @@ public class GreetingWebservice {
     @RequestMapping("/greeting")
     @ResponseBody
     public String sayHello() {
-        return "Greeting from GB";
+        return "Logn success!Greeting from GB";
     }
 }

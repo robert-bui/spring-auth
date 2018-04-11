@@ -9,18 +9,23 @@ import java.io.Serializable;
 @Document
 public class UserInfo implements Serializable {
     @Id
+//    @QuerySqlField(index = true)
     private String id;
 
     @Field
+//    @QuerySqlField(index = true)
     private String username;
 
     @Field
+//    @QuerySqlField(index = true)
     private String password;
 
     @Field
+//    @QuerySqlField(index = true)
     private String role;
 
     @Field
+//    @QuerySqlField(index = true)
     private String ssid;
 
     public UserInfo(String id, String username, String password, String role) {

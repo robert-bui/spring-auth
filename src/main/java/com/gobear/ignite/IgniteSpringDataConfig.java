@@ -1,42 +1,41 @@
+/*
 package com.gobear.ignite;
 
-
+import com.gobear.model.UserInfo;
+import org.apache.ignite.Ignite;
+import org.apache.ignite.Ignition;
 import org.apache.ignite.cache.CacheMode;
-import org.apache.ignite.cache.spring.SpringCacheManager;
 import org.apache.ignite.configuration.CacheConfiguration;
 import org.apache.ignite.configuration.IgniteConfiguration;
-import org.apache.ignite.configuration.NearCacheConfiguration;
 import org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi;
 import org.apache.ignite.spi.discovery.tcp.ipfinder.multicast.TcpDiscoveryMulticastIpFinder;
+import org.apache.ignite.springdata.repository.config.EnableIgniteRepositories;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 
 @Configuration
-@Service
-@EnableCaching
-public class IgniteConfig {
+@EnableIgniteRepositories
+public class IgniteSpringDataConfig {
 
     @Autowired
     private Environment env;
 
-    /*@Value("${server.mode}")
-    private boolean serverMode;*/
-
-    /* Inject the ignite config into the SpringCacheManager, then the ignite instance will be auto started */
-    @Bean("cacheManager")
-    public SpringCacheManager getSpringCacheManager() {
-
-        SpringCacheManager springCacheManager = new SpringCacheManager();
+    @Bean
+    public Ignite igniteInstance() {
 
         IgniteConfiguration configuration = new IgniteConfiguration();
 
+        configuration.setIgniteInstanceName("springDataAuthNode");
+        configuration.setPeerClassLoadingEnabled(true);
+
+        CacheConfiguration cacheConfiguration = new CacheConfiguration("UserInfoCache");
+        cacheConfiguration.setIndexedTypes(String.class, UserInfo.class);
+        cacheConfiguration.setCacheMode(CacheMode.REPLICATED);
+        configuration.setCacheConfiguration(cacheConfiguration);
 
         TcpDiscoverySpi discoverySpi = new TcpDiscoverySpi();
         TcpDiscoveryMulticastIpFinder ipFinder = new TcpDiscoveryMulticastIpFinder();
@@ -54,22 +53,8 @@ public class IgniteConfig {
             configuration.setClientMode(true);
         }
 
-        CacheConfiguration cacheConfiguration = new CacheConfiguration();
-        cacheConfiguration.setName("TestUserCache");
-        cacheConfiguration.setCacheMode(CacheMode.REPLICATED);
-        configuration.setCacheConfiguration(cacheConfiguration);
 
-
-        NearCacheConfiguration nearCacheConfiguration = new NearCacheConfiguration();
-        nearCacheConfiguration.setNearStartSize(1000);
-
-
-        springCacheManager.setDynamicNearCacheConfiguration(nearCacheConfiguration);
-
-        springCacheManager.setConfiguration(configuration);
-
-
-        return springCacheManager;
+        return Ignition.start(configuration);
     }
 
     private boolean isServerMode() {
@@ -77,6 +62,5 @@ public class IgniteConfig {
         System.out.println("Is Server Mode Property: " + env.getProperty("server.mode"));
         return Boolean.valueOf(env.getProperty("server.mode", "false"));
     }
-
-
 }
+*/
